@@ -569,7 +569,7 @@ class DXLinkStreamer:
         message = {
             "type": "FEED_SETUP",
             "channel": self._channels[event_type],
-            "acceptAggregationPeriod": 10,
+            "acceptAggregationPeriod": 0.1,
             "acceptDataFormat": "COMPACT",
         }
 
