@@ -1,7 +1,7 @@
 [![Docs](https://readthedocs.org/projects/tastyworks-api/badge/?version=latest)](https://tastyworks-api.readthedocs.io/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/tastytrade)](https://pypi.org/project/tastytrade)
 [![Downloads](https://static.pepy.tech/badge/tastytrade)](https://pepy.tech/project/tastytrade)
-[![Release)](https://img.shields.io/github/v/release/tastyware/tastytrade)](https://github.com/tastyware/tastytrade/releases/latest)
+[![Release)](https://img.shields.io/github/v/release/tastyware/tastytrade?label=release%20notes)](https://github.com/tastyware/tastytrade/releases)
 
 # Tastytrade Python SDK
 
@@ -43,7 +43,7 @@ async with DXLinkStreamer(session) as streamer:
 ```
 
 ```python
->>> [Quote(eventSymbol='SPY', eventTime=0, sequence=0, timeNanoPart=0, bidTime=0, bidExchangeCode='Q', bidPrice=411.58, bidSize=400.0, askTime=0, askExchangeCode='Q', askPrice=411.6, askSize=1313.0), Quote(eventSymbol='SPX', eventTime=0, sequence=0, timeNanoPart=0, bidTime=0, bidExchangeCode='\x00', bidPrice=4122.49, bidSize='NaN', askTime=0, askExchangeCode='\x00', askPrice=4123.65, askSize='NaN')]
+>>> Quote(eventSymbol='SPY', eventTime=0, sequence=0, timeNanoPart=0, bidTime=0, bidExchangeCode='Q', bidPrice=411.58, bidSize=400.0, askTime=0, askExchangeCode='Q', askPrice=411.6, askSize=1313.0)
 ```
 
 Note that this is asynchronous code, so you can't run it as is unless you're using a Jupyter notebook or something similar.
