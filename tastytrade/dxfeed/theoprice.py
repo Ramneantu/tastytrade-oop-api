@@ -1,9 +1,9 @@
 from decimal import Decimal
 
-from .event import Event
+from .event import IndexedEvent
 
 
-class TheoPrice(Event):
+class TheoPrice(IndexedEvent):
     """
     Theo price is a snapshot of the theoretical option price computation that
     is periodically performed by dxPrice model-free computation. dxFeed does
@@ -12,12 +12,6 @@ class TheoPrice(Event):
     this event.
     """
 
-    #: symbol of this event
-    eventSymbol: str
-    #: time of this event
-    eventTime: int
-    #: transactional event flags
-    eventFlags: int
     #: unique per-symbol index of this event
     index: int
     #: timestamp of this event in milliseconds
@@ -27,7 +21,7 @@ class TheoPrice(Event):
     #: theoretical price
     price: Decimal
     #: underlying price at the time of theo price computation
-    underlyingPrice: Decimal
+    underlying_price: Decimal
     #: delta of the theoretical price
     delta: Decimal
     #: gamma of the theoretical price

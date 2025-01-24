@@ -1,9 +1,9 @@
 from decimal import Decimal
 
-from .event import Event
+from .event import IndexedEvent
 
 
-class Underlying(Event):
+class Underlying(IndexedEvent):
     """
     Underlying event is a snapshot of computed values that are available for
     an option underlying symbol based on the option prices on the market. It
@@ -11,12 +11,6 @@ class Underlying(Event):
     corresponding values on the market at any given moment of time.
     """
 
-    #: symbol of this event
-    eventSymbol: str
-    #: time of this event
-    eventTime: int
-    #: transactional event flags
-    eventFlags: int
     #: unique per-symbol index of this event
     index: int
     #: timestamp of this event in milliseconds
@@ -26,14 +20,14 @@ class Underlying(Event):
     #: 30-day implied volatility for this underlying based on VIX methodology
     volatility: Decimal
     #: front month implied volatility for the underlying using VIX methodology
-    frontVolatility: Decimal
+    front_volatility: Decimal
     #: back month implied volatility for the underlying using VIX methodology
-    backVolatility: Decimal
+    back_volatility: Decimal
     #: call options traded volume for a day
-    callVolume: int
+    call_volume: int
     #: put options traded volume for a day
-    putVolume: int
+    put_volume: int
     #: options traded volume for a day
-    optionVolume: int
+    option_volume: int
     #: ratio of put options volume to call options volume for a day
-    putCallRatio: Decimal
+    put_call_ratio: Decimal

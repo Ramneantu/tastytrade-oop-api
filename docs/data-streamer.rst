@@ -10,7 +10,7 @@ You can create a streamer using an active production session:
 .. code-block:: python
 
    from tastytrade import DXLinkStreamer
-   streamer = await DXLinkStreamer.create(session)
+   streamer = await DXLinkStreamer(session)
 
 Or, you can create a streamer using an asynchronous context manager:
 
@@ -36,7 +36,7 @@ Once you've created the streamer, you can subscribe/unsubscribe to events, like 
                break
        print(quotes)
 
->>> [{'SPY': Quote(eventSymbol='SPY', eventTime=0, sequence=0, timeNanoPart=0, bidTime=0, bidExchangeCode='Q', bidPrice=411.58, bidSize=400.0, askTime=0, askExchangeCode='Q', askPrice=411.6, askSize=1313.0), 'SPX': Quote(eventSymbol='SPX', eventTime=0, sequence=0, timeNanoPart=0, bidTime=0, bidExchangeCode='\x00', bidPrice=4122.49, bidSize='NaN', askTime=0, askExchangeCode='\x00', askPrice=4123.65, askSize='NaN')}]
+>>> [{'SPY': Quote(event_symbol='SPY', event_time=0, sequence=0, time_nano_part=0, bid_time=0, bid_exchange_code='Q', bid_price=411.58, bid_size=400.0, ask_time=0, ask_exchange_code='Q', ask_price=411.6, ask_size=1313.0), 'SPX': Quote(event_symbol='SPX', event_time=0, sequence=0, time_nano_part=0, bid_time=0, bid_exchange_code='\x00', bid_price=4122.49, bid_size='NaN', ask_time=0, ask_exchange_code='\x00', ask_price=4123.65, ask_size='NaN')}]
 
 Note that these are ``asyncio`` calls, so you'll need to run this code asynchronously. Here's an example:
 
@@ -51,7 +51,7 @@ Note that these are ``asyncio`` calls, so you'll need to run this code asynchron
 
    asyncio.run(main(session))
 
->>> [Quote(eventSymbol='SPY', eventTime=0, sequence=0, timeNanoPart=0, bidTime=0, bidExchangeCode='Q', bidPrice=411.58, bidSize=400.0, askTime=0, askExchangeCode='Q', askPrice=411.6, askSize=1313.0), Quote(eventSymbol='SPX', eventTime=0, sequence=0, timeNanoPart=0, bidTime=0, bidExchangeCode='\x00', bidPrice=4122.49, bidSize='NaN', askTime=0, askExchangeCode='\x00', askPrice=4123.65, askSize='NaN')]
+>>> [Quote(event_symbol='SPY', event_time=0, sequence=0, time_nano_part=0, bid_time=0, bid_exchange_code='Q', bid_price=411.58, bid_size=400.0, ask_time=0, ask_exchange_code='Q', ask_price=411.6, ask_size=1313.0), Quote(event_symbol='SPX', event_time=0, sequence=0, time_nanoPart=0, bid_time=0, bid_exchange_code='\x00', bid_price=4122.49, bid_size='NaN', ask_time=0, ask_exchange_code='\x00', ask_price=4123.65, ask_size='NaN')]
 
 Alternatively, you can do testing in a Jupyter notebook, which allows you to make async calls directly, or run a python shell like this: `python -m asyncio`.
 
@@ -72,7 +72,7 @@ We can also use the streamer to stream greeks for options symbols:
        greeks = await streamer.get_event(Greeks)
        print(greeks)
 
->>> [Greeks(eventSymbol='.SPLG230616C23', eventTime=0, eventFlags=0, index=7235129486797176832, time=1684559855338, sequence=0, price=26.3380972233688, volatility=0.396983376650804, delta=0.999999999996191, gamma=4.81989763184255e-12, theta=-2.5212017514875e-12, rho=0.01834504287973133, vega=3.7003015672215e-12)]
+>>> [Greeks(event_symbol='.SPLG230616C23', event_time=0, event_flags=0, index=7235129486797176832, time=1684559855338, sequence=0, price=26.3380972233688, volatility=0.396983376650804, delta=0.999999999996191, gamma=4.81989763184255e-12, theta=-2.5212017514875e-12, rho=0.01834504287973133, vega=3.7003015672215e-12)]
 
 Advanced usage
 --------------
@@ -110,7 +110,7 @@ For example, we can use the streamer to create an option chain that will continu
            # the `streamer_symbol` property is the symbol used by the streamer
            streamer_symbols = [o.streamer_symbol for o in options]
 
-           streamer = await DXLinkStreamer.create(session)
+           streamer = await DXLinkStreamer(session)
            # subscribe to quotes and greeks for all options on that date
            await streamer.subscribe(Quote, [symbol] + streamer_symbols)
            await streamer.subscribe(Greeks, streamer_symbols)
@@ -131,11 +131,11 @@ For example, we can use the streamer to create an option chain that will continu
 
        async def _update_greeks(self):
            async for e in self.streamer.listen(Greeks):
-               self.greeks[e.eventSymbol] = e
+               self.greeks[e.event_symbol] = e
       
        async def _update_quotes(self):
            async for e in self.streamer.listen(Quote):
-               self.quotes[e.eventSymbol] = e
+               self.quotes[e.event_symbol] = e
 
 Now, we can access the quotes and greeks at any time, and they'll be up-to-date with the live prices from the streamer:
 
@@ -145,4 +145,25 @@ Now, we can access the quotes and greeks at any time, and they'll be up-to-date 
    symbol = live_prices.calls[44].streamer_symbol
    print(live_prices.quotes[symbol], live_prices.greeks[symbol])
 
->>> Quote(eventSymbol='.SPY230721C387', eventTime=0, sequence=0, timeNanoPart=0, bidTime=1689365699000, bidExchangeCode='X', bidPrice=62.01, bidSize=50.0, askTime=1689365699000, askExchangeCode='X', askPrice=62.83, askSize=50.0) Greeks(eventSymbol='.SPY230721C387', eventTime=0, eventFlags=0, index=7255910303911641088, time=1689398266363, sequence=0, price=62.6049270064687, volatility=0.536152815048564, delta=0.971506591907638, gamma=0.001814464566110275, theta=-0.1440768557397271, rho=0.0831882577866199, vega=0.0436861878838861)
+>>> Quote(event_symbol='.SPY230721C387', event_time=0, sequence=0, time_nano_part=0, bid_time=1689365699000, bid_exchange_code='X', bid_price=62.01, bid_size=50.0, ask_time=1689365699000, ask_exchange_code='X', ask_price=62.83, ask_size=50.0) Greeks(event_symbol='.SPY230721C387', event_time=0, event_flags=0, index=7255910303911641088, time=1689398266363, sequence=0, price=62.6049270064687, volatility=0.536152815048564, delta=0.971506591907638, gamma=0.001814464566110275, theta=-0.1440768557397271, rho=0.0831882577866199, vega=0.0436861878838861)
+
+Retry callback
+--------------
+
+The data streamer has a special "callback" function which can be used to execute arbitrary code whenever the websocket reconnects. This is useful for re-subscribing to whatever events you wanted to subscribe to initially (in fact, you can probably use the same function/code you use when initializing the connection).
+The callback function should look something like this:
+
+.. code-block:: python
+
+    async def callback(streamer: DXLinkStreamer, arg1, arg2):
+        await streamer.subscribe(Quote, ['SPY'])
+
+The requirements are that the first parameter be the `DXLinkStreamer` instance, and the function should be asynchronous. Other than that, you have the flexibility to decide what arguments you want to use.
+This callback can then be used when creating the streamer:
+
+.. code-block:: python
+
+    async with DXLinkStreamer(session, reconnect_fn=callback, reconnect_args=(arg1, arg2)) as streamer:
+        # ...
+
+The reconnection uses `websockets`' exponential backoff algorithm, which can be configured through environment variables `here <https://websockets.readthedocs.io/en/14.1/reference/variables.html>`_.
